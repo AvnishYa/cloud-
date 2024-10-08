@@ -1,0 +1,66 @@
+"'using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using WebApplication6.Models;
+namespace WebApplication6.Controllers
+{
+ public class DefaultController : Controller
+ {
+ Database1Entities1 db = new Database1Entities1();
+ [HttpGet]
+ public ActionResult Index()
+ {
+ return View();
+ }
+ [HttpPost]
+ public ActionResult Index(Table t1) //"Table" is the actual name, create object of the 
+table
+ {
+ db.Tables.Add(t1);
+ db.SaveChanges();
+ return RedirectToAction("Display");
+ }
+ [HttpGet]
+ public ActionResult Display()
+ {
+ var obj = db.Tables.ToList();
+ return View(obj);
+ }
+ [HttpGet]
+ public ActionResult Edit(int id) 
+ {
+ var obj = db.Tables.Find(id);
+ return View();
+ }
+ [HttpPost]
+ public ActionResult Edit(Table t1) //"Table" is the actual name, create object of the 
+table
+ {
+ db.Entry(t1).State = EntityState.Modified;
+ db.SaveChanges();
+ return RedirectToAction("Display");
+ }
+ public ActionResult details(int id)
+ {
+ var obj = db.Tables.Find(id);
+ return View(obj);
+ }
+ [HttpGet]
+ public ActionResult Delete(int id)
+ {
+ var obj = db.Tables.Find(id);
+ return View();
+ }
+ [HttpPost]
+ public ActionResult Delete(Table t1) //"Table" is the actual name, create object of the 
+table
+ {
+ db.Entry(t1).State = EntityState.Deleted;
+ db.SaveChanges();
+ return RedirectToAction("Display");
+ }
+ }
+}""
